@@ -108,6 +108,7 @@ print digits['DESCR']
 =====================
 """
 max_pixel_value = 16
+test_reduce_fraction = 1.   #1/(fraction)  Reduces the test set. [set 2 for half.]
 
 #Print the Data Keys
 print 'Data Dict Keys: ', digits.keys()
@@ -143,7 +144,7 @@ print 'Total Images: ', len(digits_data)
  BUILD TRAINING / TEST SET
 ===========================
 """
-test_fraction = 0.25
+test_fraction = 0.1
 training_fraction = 1. - test_fraction
 #Get Random Indexes. 
 test_number_of_images = math.floor(total_number_of_images * test_fraction)
@@ -305,15 +306,20 @@ false_secondary_predictions = 0  #How many primary or secondary predictions are 
 
 #Initialize relevant things
 iterations = 0   #Total number of items looped over.
+predictions = []
+truths      = []
+successes   = []
 
 #LOOP FOR GOING OVER TEST SET!
-max_test_iterations = 20 
+print("MAX ITERATIONS SET TO 1/%d of test set." % test_reduce_fraction)
+max_test_iterations = len(test_idxs)/test_reduce_fraction
 #print("Test_Index_Master_Array[1]: ")
 #print Test_Index_Master_Array[1]
 for poop_index, poop_value in enumerate(test_idxs):
 	pass 
 
 	if iterations >= max_test_iterations:
+		print("Breaking due to max_test_iterations being reached! ... Break")
 		break
 
 	"""
@@ -369,11 +375,17 @@ for poop_index, poop_value in enumerate(test_idxs):
 	truth = digits_target[random_test_idx]
 	print("WE FIRST PREDICT A VALUE OF: %d" % predicted_value)
 	print("It may also be the valu  : %d" % secondary_predicted_value)
-	print("THE ACTUAL VALUE WAS   : %d" % digits_target[random_test_idx])
+	print("THE ACTUAL VALUE WAS   : %d" % truth)
 
+	#LISTS to store predictions and truths for analysis. 
+	predictions.append(predicted_value)
+	truths.append(truth)
+	
 	if predicted_value == truth:
+		successes.append(1)  #Successes == 1 means TRUTH
 		success_truths += 1
 	else:
+		successes.append(0)  #Successes == 0 means FAILURE
 		false_predictions += 1
 	if (secondary_predicted_value == truth) or (predicted_value == truth):
 		secondary_success_truths += 1
@@ -382,17 +394,51 @@ for poop_index, poop_value in enumerate(test_idxs):
 
 	iterations += 1
 
-
+print("\n")
+print("*************************************************************")
+print(" ****************      FINISHED TESTING     **************** ")
+print("*************************************************************\n")
+print("================================")
 print("SUCCESS/ failure TABLE: ")
 print("================================")
 print("Correct Primary Predictions: %d " % success_truths)
 print("Correct Pri|Sec Predictions: %d " % secondary_success_truths)
 print("Total Predictions Made:  %d " % iterations)
-print("Ratio of Correct (Primary) to Total:  %.3f" % (success_truths/iterations))
-print("Ratio of Correct (Pri|Sec) to Total:  %.3f" % (secondary_success_truths/iterations))
+print("Ratio of Correct (Primary) to Total:  %.3f" % (1.0*success_truths/iterations))
+print("Ratio of Correct (Pri|Sec) to Total:  %.3f" % (1.0*secondary_success_truths/iterations))
 print("================================")
 
+suc_count = 0
+fail_count = 0
+tot_count = 0
+fail_num_by_num   = []
+success_ratio_by_num = []
+fail_ratio_by_num    = []
 
+for num in range(10):
+	for i, elem in enumerate(truths):
+		if elem == num:
+			if successes[i] == 1:
+				#FAILURE
+				suc_count += 1
+			else: 
+				fail_count += 1
+			tot_count += 1
+	suc_ratio = 1.0*suc_count/tot_count
+	fail_ratio = 1.0*fail_count/tot_count
+	success_ratio_by_num.append(suc_ratio)
+	fail_num_by_num.append(fail_count)
+	fail_ratio_by_num.append(fail_ratio)
+	suc_count  = 0
+	fail_count = 0
+	tot_count  = 0
+
+print("Success Ratio By Number\n ------------------------------")
+print("Truth_val | Success | Failure | Number Incorrect")
+for imtired, reallytired in enumerate(success_ratio_by_num):
+	print("    %d:       %.3f       %.3f      %d " %            \
+		  (imtired, reallytired, fail_ratio_by_num[imtired], \
+		  	fail_num_by_num[imtired]))
 
 
 """
