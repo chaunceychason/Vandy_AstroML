@@ -28,28 +28,12 @@ Machine Learning Code 1. - Native Nays.
 def plot_image_basic( xlist, ylist, title, xlab, ylab, legend_val, psize, xlog, ylog, yflip , pcounter, cmap_var=''):
 	print("Entered Basic Plot Function")
 	
-	
-	if len(xlist) != len(ylist):
-		print("ERROR! X and Y DATA LENGTHS ARE DIFFERENT!")
-		print("Length: x_data: %g" % len(xlist))
-		print("Length: y_data: %g" % len(ylist))
-	if len(xlist)==0 or len(ylist)==0:
-		print("ERROR: list length is ZERO!")
-		print("Length: x_data: %g" % len(xlist))
-		print("Length: y_data: %g" % len(ylist))
-	else:
-		print("Length: x_data: %g" % len(xlist))
-		print("Length: y_data: %g" % len(ylist))
-
 	if legend_val != 0:
 		pass
 	plot_title=" Blank Title "   
 	x_axis="Blank X"
 	y_axis="Blank Y"
 	pointsize = 5
-	#figure_name=os.path.expanduser('~/Feb9LSSHW2_plot1_A' +'.png')
-	#figure_name=os.path.expanduser('~/Feb9LSSHW2_plot1_A' +'.png')
-	#Choose which type of plot you would like: Commented out.
 	#sets new plot features from call. 	
 	"""
 	if True:
@@ -58,8 +42,7 @@ def plot_image_basic( xlist, ylist, title, xlab, ylab, legend_val, psize, xlog, 
 		y_axis = ylab
  		pointsize = psize
  	"""
-	#plt.scatter(xlist, ylist, s=pointsize, lw=0)
-
+	
 	#plt.title(plot_title)
 	#plt.xlabel(x_axis)
 	#plt.ylabel(y_axis)
@@ -108,7 +91,7 @@ print digits['DESCR']
 =====================
 """
 max_pixel_value = 16
-test_reduce_fraction = 1.   #1/(fraction)  Reduces the test set. [set 2 for half.]
+test_reduce_fraction = 4.   #1/(fraction)  Reduces the test set. [set 2 for half.]
 
 #Print the Data Keys
 print 'Data Dict Keys: ', digits.keys()
@@ -424,8 +407,14 @@ for num in range(10):
 			else: 
 				fail_count += 1
 			tot_count += 1
-	suc_ratio = 1.0*suc_count/tot_count
-	fail_ratio = 1.0*fail_count/tot_count
+	try:
+		suc_ratio = 1.0*suc_count/tot_count
+		fail_ratio = 1.0*fail_count/tot_count
+	except:
+		print("Encountered a value with no data points! num = %d " % num)
+		suc_ratio = 0
+		fail_ratio = 0 
+
 	success_ratio_by_num.append(suc_ratio)
 	fail_num_by_num.append(fail_count)
 	fail_ratio_by_num.append(fail_ratio)
