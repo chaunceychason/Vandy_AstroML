@@ -921,3 +921,4 @@ Saving plot: /home/chasonn/Feb17astroML_plot0.png
 Time: 
 0:00:00.381183
 END. 
+MLDigits1_0 is for basic single test image.

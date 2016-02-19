@@ -9,7 +9,6 @@ matplotlib.use( 'Agg' )
 import matplotlib.pyplot as plt
 from sklearn.datasets import load_digits
 #import sklearn 
-
 from datetime import datetime
 startTime = datetime.now()
 
@@ -92,6 +91,9 @@ print digits['DESCR']
 """
 max_pixel_value = 16
 test_reduce_fraction = 4.   #1/(fraction)  Reduces the test set. [set 2 for half.]
+pcount = 0
+#Set the Colormap
+color_map_used = plt.get_cmap('autumn')
 
 #Print the Data Keys
 print 'Data Dict Keys: ', digits.keys()
@@ -357,7 +359,7 @@ for poop_index, poop_value in enumerate(test_idxs):
 
 	truth = digits_target[random_test_idx]
 	print("WE FIRST PREDICT A VALUE OF: %d" % predicted_value)
-	print("It may also be the valu  : %d" % secondary_predicted_value)
+	print("It may also be the value : %d" % secondary_predicted_value)
 	print("THE ACTUAL VALUE WAS   : %d" % truth)
 
 	#LISTS to store predictions and truths for analysis. 
@@ -369,6 +371,22 @@ for poop_index, poop_value in enumerate(test_idxs):
 		success_truths += 1
 	else:
 		successes.append(0)  #Successes == 0 means FAILURE
+		
+		#PRINT THE FAILURES. 
+		print("FAILURE EXAMPLE PRINTING....")
+		title_label = "A single number. " 
+		x_label = "x coordinate"
+		y_label = "y coordinate"
+		x_data  = digits['images'][poop_value]
+		y_data  = []
+		legend_val = 0
+		pointsize = 3
+		yflip = False
+		ylog = 0
+		xlog = 0
+		pcount = plot_image_basic(x_data, y_data, title_label, x_label, y_label, \
+		         legend_val, pointsize, xlog, ylog,  yflip, pcount, color_map_used)
+
 		false_predictions += 1
 	if (secondary_predicted_value == truth) or (predicted_value == truth):
 		secondary_success_truths += 1
@@ -391,10 +409,10 @@ print("Ratio of Correct (Primary) to Total:  %.3f" % (1.0*success_truths/iterati
 print("Ratio of Correct (Pri|Sec) to Total:  %.3f" % (1.0*secondary_success_truths/iterations))
 print("================================")
 
-suc_count = 0
+suc_count  = 0
 fail_count = 0
-tot_count = 0
-fail_num_by_num   = []
+tot_count  = 0
+fail_num_by_num      = []
 success_ratio_by_num = []
 fail_ratio_by_num    = []
 
@@ -423,10 +441,10 @@ for num in range(10):
 	tot_count  = 0
 
 print("Success Ratio By Number\n ------------------------------")
-print("Truth_val | Success | Failure | Number Incorrect")
+print("Truth_val | Success | Failure | #Fail Pri. ")
 for imtired, reallytired in enumerate(success_ratio_by_num):
-	print("    %d:       %.3f       %.3f      %d " %            \
-		  (imtired, reallytired, fail_ratio_by_num[imtired], \
+	print("    %d:       %.3f       %.3f        %d" % \
+		  (imtired, reallytired, fail_ratio_by_num[imtired],  \
 		  	fail_num_by_num[imtired]))
 
 
@@ -436,7 +454,7 @@ for imtired, reallytired in enumerate(success_ratio_by_num):
 ====================
 """
 #initial plots generated to 0. 
-pcount = 0
+#pcount = 0
 #Set the Colormap
 color_map_used = plt.get_cmap('autumn')
 
@@ -445,6 +463,7 @@ color_map_used = plt.get_cmap('autumn')
 #Generate a random number for the image from 0 ==> max_image_idx
 #max_image_idx = total_number_of_images
 #rand_image_idx = int(random.random() * max_image_idx)
+"""
 title_label = "A single number. " 
 x_label = "x coordinate"
 y_label = "y coordinate"
@@ -458,7 +477,7 @@ xlog = 0
 pcount = plot_image_basic(x_data, y_data, title_label, x_label, y_label, \
          legend_val, pointsize, xlog, ylog,  yflip, pcount, color_map_used)
 
-
+"""
 
 """
 print("Now Plotting....")
